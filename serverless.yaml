@@ -1,0 +1,35 @@
+service: serverless-go-api
+frameworkVersion: '3'
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: us-east-1
+  stage: local
+
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true
+    httpPort: 3000
+
+package:
+  patterns:
+    exclude:
+    - './**'
+    include:
+    - './bin/**'
+
+functions:
+  hello-world:
+    handler: bin/hello-world
+    package:
+      include:
+        - ./bin/hello-world
+    events:
+      - http:
+          path: /hello-world
+          method: get
+          cors: true
