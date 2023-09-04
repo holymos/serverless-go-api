@@ -1,0 +1,49 @@
+Resources:
+  usersTable:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Retain
+    Properties:
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: entity
+          KeyType: RANGE
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: entity
+          AttributeType: S
+        - AttributeName: createdAt
+          AttributeType: S
+        - AttributeName: email
+          AttributeType: S
+        - AttributeName: username
+          AttributeType: S
+
+      GlobalSecondaryIndexes:
+        - IndexName: entity-createdAt-index
+          KeySchema:
+            - AttributeName: entity
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: email-entity-index
+          KeySchema:
+            - AttributeName: email
+              KeyType: HASH
+            - AttributeName: entity
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: username-entity-index
+          KeySchema:
+            - AttributeName: username
+              KeyType: HASH
+            - AttributeName: entity
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST
+      TableName: '${self:custom.stage}-users'

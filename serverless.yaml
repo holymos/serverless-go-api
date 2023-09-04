@@ -27,8 +27,8 @@ custom:
     - production
 functions:
   - ${file(functions/hello-world/spec.yml)}
-# resources:
-#   - ${file(resources/conditions.yml)}
+resources:
+  - ${file(resources/dynamo/users.yml)}
 #   - ${file(resources/functions-spec-users-resources.yml)}
 #   - ${file(resources/functions-spec-leaders-resources.yml)}
 #   - ${file(resources/resources-spec-api-authorizer.yml)}
