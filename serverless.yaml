@@ -7,29 +7,31 @@ plugins:
 provider:
   name: aws
   runtime: go1.x
-  region: us-east-1
-  stage: local
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  apiGateway:
+    minimumCompressionSize: 1024
+  # environment:
+  #   FAVO_TABLE_GEO_LEADER: ${opt:stage, self:provider.stage}_LeaderGeoLocation
 
 custom:
   serverless-offline:
     noPrependStageInUrl: true
     httpPort: 3000
-
-package:
-  patterns:
-    exclude:
-    - './**'
-    include:
-    - './bin/**'
-
+  prune:
+    automatic: true
+    number: 1
+  stage: ${opt:stage, self:provider.stage}
+  stages:
+    - dev
+    - production
 functions:
-  hello-world:
-    handler: bin/hello-world
-    package:
-      include:
-        - ./bin/hello-world
-    events:
-      - http:
-          path: /hello-world
-          method: get
-          cors: true
+  - ${file(functions/hello-world/spec.yml)}
+# resources:
+#   - ${file(resources/conditions.yml)}
+#   - ${file(resources/functions-spec-users-resources.yml)}
+#   - ${file(resources/functions-spec-leaders-resources.yml)}
+#   - ${file(resources/resources-spec-api-authorizer.yml)}
+#   - ${file(resources/resources-spec-apurata.yml)}
+#   - ${file(resources/resources-spec-cash.yml)}
+#   - ${file(resources/resources-spec-terms.yml)}
