@@ -1,0 +1,149 @@
+{
+  "components": {
+    "schemas": {
+      "RequestBody": {
+        "type": "object",
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "username"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "CreatedUserResponseBody": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponseBody": {
+        "type": "string"
+      }
+    },
+    "examples": {
+      "requestBodyExample": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john.doe@email.com",
+        "username": "johndoe"
+      },
+      "userCreatedResponseExample": {
+        "id": "5f3331bd-cdac",
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john.doe@email.com",
+        "username": "johndoe",
+        "createdAt": "2023-09-05 02:45:17.679429306 +0000 UTC m=+0.053552541",
+        "updatedAt": "2023-09-05 02:45:17.679429306 +0000 UTC m=+0.053552541"
+      }
+    }
+  },
+  "paths": {
+    "post": {
+      "summary": "Create user",
+      "requestBody": {
+        "description": "Request body schema to create user",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RequestBody"
+            },
+            "examples": {
+              "RequestBody": {
+                "summary": "Request body",
+                "value": {
+                  "$ref": "#/components/examples/requestBodyExample"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Successful request, user created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatedUserResponseBody"
+              },
+              "examples": {
+                "UserCreated": {
+                  "summary": "Created user data response",
+                  "value": {
+                    "$ref": "#/components/examples/userCreatedResponseExample"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Missing parameter on Create User",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorResponseBody"
+              },
+              "examples": {
+                "Missing parameter error": {
+                  "value": "Missing parameter on Create User"
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error on Create user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorResponseBody"
+              },
+              "examples": {
+                "Internal server error": {
+                  "value": "Internal server error on Create user"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Serverless Go API",
+    "description": "Serverless API made with Go",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/create-user": {
+      "post": {
+        "summary": "Create User",
+        "description": "Create user.",
+        "$ref": "./functions/create-user.json#/paths/post"
+      }
+    }
+  }
+}

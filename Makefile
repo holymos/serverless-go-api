@@ -1,4 +1,4 @@
-.PHONY: clean build dev deploy
+.PHONY: clean build dev deploy doc
 
 clean:
 	go clean
@@ -13,3 +13,6 @@ dev:  clean build
 
 deploy: clean build
 	sls deploy --verbose
+
+doc:
+	npx @redocly/cli build-docs --output ./docs/index.html docs/openapi/openapi.json
