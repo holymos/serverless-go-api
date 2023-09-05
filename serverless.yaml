@@ -3,6 +3,7 @@ frameworkVersion: '3'
 
 plugins:
   - serverless-offline
+  - serverless-iam-roles-per-function
 
 provider:
   name: aws
@@ -11,8 +12,8 @@ provider:
   region: ${opt:region, 'us-east-1'}
   apiGateway:
     minimumCompressionSize: 1024
-  # environment:
-  #   FAVO_TABLE_GEO_LEADER: ${opt:stage, self:provider.stage}_LeaderGeoLocation
+  environment:
+    USERS_TABLE: '${self:custom.stage}-users'
 
 custom:
   serverless-offline:
@@ -25,8 +26,9 @@ custom:
   stages:
     - dev
     - production
+  users-table: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.stage}-users"
 functions:
-  - ${file(functions/hello-world/spec.yml)}
+  - ${file(cmd/create-user/spec.yml)}
 resources:
   - ${file(resources/dynamo/users.yml)}
 #   - ${file(resources/functions-spec-users-resources.yml)}

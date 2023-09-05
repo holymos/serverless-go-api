@@ -6,9 +6,9 @@ clean:
 
 build: clean
 	go mod tidy
-	env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o bin/hello-world functions/hello-world/main.go
+	env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o bin/create-user cmd/create-user/main.go
 
-dev:
+dev:  clean build
 	sls offline --useDocker start --host 0.0.0.0
 
 deploy: clean build

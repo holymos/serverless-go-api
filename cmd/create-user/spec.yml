@@ -1,0 +1,15 @@
+create-user:
+  handler: bin/create-user
+  package:
+    include:
+      - ./bin/create-user
+  events:
+    - http:
+        path: /create-user
+        method: post
+        cors: true
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem        
+      Resource: "${self:custom.users-table}"
