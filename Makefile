@@ -4,11 +4,12 @@ clean:
 	go clean
 	rm -rf ./bin
 
-build: clean
+build: clean doc
 	go mod tidy
 	env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o bin/create-user cmd/create-user/main.go
+	env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o bin/serve-docs cmd/serve-docs/main.go
 
-dev:  clean build
+dev:  clean build doc
 	sls offline --useDocker start --host 0.0.0.0
 
 deploy: clean build

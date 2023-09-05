@@ -29,11 +29,6 @@ custom:
   users-table: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.stage}-users"
 functions:
   - ${file(cmd/create-user/spec.yml)}
+  - ${file(cmd/serve-docs/spec.yml)}
 resources:
   - ${file(resources/dynamo/users.yml)}
-#   - ${file(resources/functions-spec-users-resources.yml)}
-#   - ${file(resources/functions-spec-leaders-resources.yml)}
-#   - ${file(resources/resources-spec-api-authorizer.yml)}
-#   - ${file(resources/resources-spec-apurata.yml)}
-#   - ${file(resources/resources-spec-cash.yml)}
-#   - ${file(resources/resources-spec-terms.yml)}

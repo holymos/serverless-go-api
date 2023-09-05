@@ -1,0 +1,11 @@
+docs:
+  handler: bin/serve-docs
+  package:
+    include:
+      - ./bin/serve-docs
+      - ./docs/index.html
+  events:
+    - http:
+        path: /docs
+        method: get
+        cors: true
