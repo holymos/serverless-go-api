@@ -1,15 +1,15 @@
-create-user:
-  handler: bin/create-user
+get-users:
+  handler: bin/get-users
   package:
     include:
-      - ./bin/create-user
+      - ./bin/get-users
   events:
     - http:
         path: /users
-        method: post
+        method: get
         cors: true
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - dynamodb:PutItem        
+        - dynamodb:Scan        
       Resource: "${self:custom.users-table}"

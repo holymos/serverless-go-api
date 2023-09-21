@@ -1,0 +1,97 @@
+{
+  "components": {
+    "schemas": {
+      "UsersResponseBody": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponseBody": {
+        "type": "string"
+      }
+    },
+    "examples": {
+      "usersResponseExample": [
+        {
+          "id": "5f3331bd-cdac",
+          "firstName": "John",
+          "lastName": "Doe",
+          "email": "john.doe@email.com",
+          "username": "johndoe",
+          "createdAt": "2023-09-05 02:45:17.679429306 +0000 UTC m=+0.053552541",
+          "updatedAt": "2023-09-05 02:45:17.679429306 +0000 UTC m=+0.053552541"
+        },
+        {
+          "id": "4g9875bf-dgye",
+          "firstName": "Mary",
+          "lastName": "Moe",
+          "email": "mary.moe@email.com",
+          "username": "marymoe",
+          "createdAt": "2023-09-05 02:45:17.679429306 +0000 UTC m=+0.053552541",
+          "updatedAt": "2023-09-05 02:45:17.679429306 +0000 UTC m=+0.053552541"
+        }
+      ]
+    }
+  },
+  "paths": {
+    "get": {
+      "summary": "Get users",
+      "responses": {
+        "200": {
+          "description": "Successful request, got users",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsersResponseBody"
+              },
+              "examples": {
+                "UserCreated": {
+                  "summary": "Users data response",
+                  "value": {
+                    "$ref": "#/components/examples/usersResponseExample"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error on Get users",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorResponseBody"
+              },
+              "examples": {
+                "Internal server error": {
+                  "value": "Internal server error on Get users"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

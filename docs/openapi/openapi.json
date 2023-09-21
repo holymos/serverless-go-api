@@ -6,11 +6,16 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/create-user": {
+    "/users": {
       "post": {
         "summary": "Create User",
         "description": "Create user.",
         "$ref": "./functions/create-user.json#/paths/post"
+      },
+      "get": {
+        "summary": "Get Users",
+        "description": "Get users.",
+        "$ref": "./functions/get-users.json#/paths/get"
       }
     }
   }

@@ -5,43 +5,27 @@ import (
 	"encoding/json"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
-	"github.com/google/uuid"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/holymos/serverless-go-api/internal/user"
 )
 
 func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	var usr user.User
-
-	err := json.Unmarshal([]byte(request.Body), &usr)
-	if err != nil {
-		return events.APIGatewayProxyResponse{
-			Body:       err.Error(),
-			StatusCode: http.StatusBadRequest,
-		}, nil
-	}
-
-	usr.Id = uuid.New().String()
-	usr.CreatedAt = time.Now().String()
-	// usr.UpdatedAt = time.Now().String()
-
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
 	}))
 	svc := dynamodb.New(sess)
 
-	input := &dynamodb.PutItemInput{
+	input := &dynamodb.ScanInput{
 		TableName: aws.String(os.Getenv(user.UsersTable)),
-		Item:      user.FormatUserToDynamo(usr),
 	}
 
-	_, err = svc.PutItem(input)
+	result, err := svc.Scan(input)
 	if err != nil {
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
@@ -49,7 +33,21 @@ func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 		}, nil
 	}
 
-	rsp, err := json.Marshal(usr)
+	var users []user.User
+	for _, item := range result.Items {
+		user := user.User{}
+
+		err := dynamodbattribute.UnmarshalMap(item, &user)
+		if err != nil {
+			return events.APIGatewayProxyResponse{
+				Body:       err.Error(),
+				StatusCode: http.StatusInternalServerError,
+			}, nil
+		}
+		users = append(users, user)
+	}
+
+	resp, err := json.Marshal(users)
 	if err != nil {
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
@@ -58,11 +56,11 @@ func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 	}
 
 	return events.APIGatewayProxyResponse{
-		Body: string(rsp),
+		Body: string(resp),
 		Headers: map[string]string{
 			"Content-Type": "application/json",
 		},
-		StatusCode: http.StatusCreated,
+		StatusCode: http.StatusOK,
 	}, nil
 }
 

@@ -22,13 +22,14 @@ custom:
   prune:
     automatic: true
     number: 1
-  stage: ${opt:stage, self:provider.stage}
+  stage: ${self:provider.stage}
   stages:
     - dev
     - production
   users-table: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.stage}-users"
 functions:
   - ${file(cmd/create-user/spec.yml)}
+  - ${file(cmd/get-users/spec.yml)}
   - ${file(cmd/serve-docs/spec.yml)}
 resources:
   - ${file(resources/dynamo/users.yml)}

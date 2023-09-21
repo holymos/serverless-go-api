@@ -7,6 +7,7 @@ clean:
 build: clean doc
 	go mod tidy
 	env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o bin/create-user cmd/create-user/main.go
+	env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o bin/get-users cmd/get-users/main.go
 	env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o bin/serve-docs cmd/serve-docs/main.go
 
 dev:  clean build doc
