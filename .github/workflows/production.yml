@@ -1,0 +1,40 @@
+name: Production deployment
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: './go.mod'
+      - run: go version
+
+      - name: Install dependencies
+        run: go mod download
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: Install Serverless
+        run: npm i serverless -g
+
+      - name: Install Serverless Dependencies
+        run: npm i
+      
+      - name: Deploy On Staging
+        run: make deploy-dev
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

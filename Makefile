@@ -13,8 +13,11 @@ build: clean doc
 dev:  clean build doc
 	sls offline --useDocker start --host 0.0.0.0
 
-deploy: clean build
-	sls deploy --verbose
+deploy-dev: clean build
+	sls deploy --verbose --stage dev
+
+deploy-prod: clean build
+	sls deploy --verbose --stage production
 
 doc:
 	npx @redocly/cli build-docs --output ./docs/index.html docs/openapi/openapi.json
