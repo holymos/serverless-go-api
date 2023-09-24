@@ -50,5 +50,5 @@ make dev
 ---
 
 ```sh
-make deploy
+make deploy-dev
 ```
